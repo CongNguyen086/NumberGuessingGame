@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Number Guessing Game</title>
+    <style>
+        button {
+            border-radius: 5px;
+            border-style: groove;
+        }
+
+        button:hover {
+            background-color: #fff;
+        }
+        .message-wrong {
+            background-color: red;
+            color: #fff;
+            width: fit-content;
+        }
+        .message-right {
+            background-color: greenyellow;
+            width: fit-content;
+        }
+    </style>
+
+    <script>
+        window.onload = function () {
+            let button = document.getElementById('guessButton');
+            let guessInput = document.getElementById('number');
+            let message = document.getElementById('message');
+            let guessHistory = document.getElementById('guessHistory');
+            let showHistory = 'Your past guess: ';
+            let max = 1;
+            let min = 50;
+            let result = Math.floor(Math.random() * (max - min + 1) ) + min;
+            let remainGuess = 10;
+            let totalGuess = 0;
+            let plural = ' guesses';
+
+            message.innerHTML = 'Welcome to Number Guessing Game! You have 10 times to guess.<br>'
+                                + 'Type any natural number...';
+            
+            function action() {
+                let userGuess = guessInput.value;
+                remainGuess--;
+                totalGuess++;
+                if (remainGuess == 1) {
+                    plural = ' guess';
+                }
+                if (userGuess < result) {
+                    message.innerHTML = 'Sorry your guess is too low. You have ' + remainGuess + plural + ' left.';
+                    message.className = 'message-wrong';
+                } else if (userGuess > result) {
+                    message.innerHTML = 'Sorry your guess is too high. You have ' + remainGuess + plural + ' left.';
+                    message.className = 'message-wrong';
+                } else if (userGuess == result) {
+                    message.innerHTML = 'Congratulations! ' + result + ' was the correct result. '
+                                        + 'It took you ' + totalGuess + ' tries.';
+                    message.className = 'message-right';
+                }
+                showHistory = showHistory + userGuess + ' ';
+                guessHistory.innerHTML = showHistory;
+
+                if (remainGuess == 0) {
+                    let alertMessage = 'You lose :( The correct result is ' + result + '. Good luck next time.';
+                    message.innerHTML = 'Sorry your guess is too low. You have ' + remainGuess + plural + ' left.';
+                    setTimeout(function() {
+                        if(alert(alertMessage)) {}
+                        else {
+                            location.reload();
+                        }
+                    }, 10);
+                }
+            }
+
+            button.addEventListener('click', action);
+        }
+    </script>
+</head>
+
+<body>
+    <div id="message"></div>
+    <br>
+    <input type="number" id="number">
+    <button id="guessButton">Guess</button>
+    <h3 id='guessHistory'></h3>
+</body>
+
+</html>
